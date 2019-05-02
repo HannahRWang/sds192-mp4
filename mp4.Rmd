@@ -1,15 +1,15 @@
 ---
 title: "mp4"
-output: html_document
+output:
+  html_document:
+    code_folding: hide
 ---
-
 
 ```{r}
 library(mdsr)
 library(RMySQL)
 library(ggplot2)
 library(knitr)
-library(ggridges)
 ```
 
 ```{r, include=FALSE}
@@ -38,7 +38,7 @@ JOIN title t2 ON t2.id = linked_movie_id
 JOIN movie_info mi ON mi.movie_id = ml.movie_id
 JOIN movie_info mi2 ON mi2.movie_id = ml.linked_movie_id
 WHERE ml.link_type_id IN (2, 4, 12)
-    AND t.kind_id = 1
+  AND t.kind_id = 1
   AND mi.info_type_id = 1 
   AND mi2.info_type_id = 1
   AND mi.info > 89
@@ -58,7 +58,6 @@ WHERE t.kind_id = 1
 ```
 
 ```{r}
-
 #gets gross of movies (max cumulative gross in USA only, due to constraints w/ format of data)
 gross <- db %>% 
   dbGetQuery('SELECT mi.movie_id, mi.info AS gross
@@ -116,22 +115,28 @@ pop_seq <- sequel_info %>%
 ```
 
 ```{r}
-ggplot(pop_seq, aes(x = original_year, y = title)) +
+pop_seq2 <- pop_seq %>%
+  filter(original_year >= 2000)
+```
+
+
+```{r}
+ggplot(pop_seq2, aes(x = original_year, y = title)) +
   geom_segment(aes(xend = sequel_year, yend = title), size = 2) +
   geom_point(size = 3) +
   geom_point(aes(x = sequel_year, y = title, color = link_type_id), size = 3) +
   labs(color = 'Type of Movie', title = "Sequels/Remakes/Spinoffs Produced by Decade", x = "Release Year of Original Movie", y = "Movie Title", caption = "(Based on data from IMDb) Each panel includes the top ten grossing movie of that decade.") +
-  theme(axis.text.x = element_text(size= 15),
+  theme(axis.text.x = element_text(size = 15),
         axis.text.y = element_text(size = 11),
         plot.title = element_text(size = 28),
         plot.caption = element_text(size = 12.5),
         strip.text.x = element_text(size = 14),
         legend.title = element_text(size = 16),
-        legend.text = element_text(size= 14),
+        legend.text = element_text(size = 14),
         axis.title.x = element_text(size = 20),
         axis.title.y = element_text(size = 20)) +
   scale_color_discrete(labels = c('Sequel', 'Remake', 'Spin-off')) +
   scale_y_discrete(labels = scales::wrap_format(40)) +
-  scale_x_continuous(limits = c(1910, 2020), expand = c(0, 0)) +
+  scale_x_continuous(limits = c(2000, 2020), expand = c(0, 0)) +
   facet_wrap( ~ decade, nrow = 5, scales = "free_y") 
 ```

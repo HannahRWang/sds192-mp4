@@ -1,11 +1,15 @@
 ---
 title: "mp4"
+author: Amy Park, Emma Vejcik, Hannah Wang
+date: "May 9, 2019"
 output:
   html_document:
     code_folding: hide
 ---
 
-```{r}
+^[Github Repository: https://github.com/HannahRWang/sds192-mp4]
+
+```{r, include=FALSE}
 library(mdsr)
 library(RMySQL)
 library(ggplot2)
@@ -26,7 +30,7 @@ knitr::opts_chunk$set(connection = db, max.print = 20)
 ```
 
 
-```{r}
+```{r, message=FALSE}
 #Gets info on sequels, remakes, and spinoffs
 #Uses indexes on type_ids
 
@@ -46,7 +50,7 @@ WHERE ml.link_type_id IN (2, 4, 12)
 ")
 ```
 
-```{r}
+```{r, message=FALSE}
 all_movies <- db %>%
   dbGetQuery("SELECT t.id AS movie_id, t.title, mi.info AS original_runtime, t.production_year AS original_year
 FROM title t
@@ -57,7 +61,7 @@ WHERE t.kind_id = 1
 ")
 ```
 
-```{r}
+```{r, message=FALSE}
 #gets gross of movies (max cumulative gross in USA only, due to constraints w/ format of data)
 gross <- db %>% 
   dbGetQuery('SELECT mi.movie_id, mi.info AS gross
@@ -74,7 +78,7 @@ gross <- db %>%
   arrange(desc(max_gross))
 ```
 
-```{r}
+```{r, message=FALSE}
 #filters for duplicates (so only original movie shows up, w/ sequels linking to it)
 #adds decade column
 sequel_info <- sequel_info %>% 
@@ -105,7 +109,7 @@ top_sequels_decade <- sequel_info %>%
   
 ```
 
-```{r}
+```{r, message=FALSE}
 #Calculates popular sequels
 pop_seq <- sequel_info %>% 
   filter(title %in% top_sequels_decade$title & !is.na(max_gross)) %>% 
@@ -114,22 +118,21 @@ pop_seq <- sequel_info %>%
   mutate(link_type_id = factor(link_type_id))
 ```
 
-```{r}
+```{r, message=FALSE}
 pop_seq2 <- pop_seq %>%
   filter(original_year >= 2000)
 ```
 
-
-```{r}
+```{r, message=FALSE}
 ggplot(pop_seq2, aes(x = original_year, y = title)) +
-  geom_segment(aes(xend = sequel_year, yend = title), size = 2) +
+  geom_segment(aes(xend = sequel_year, yend = title), size = 1) +
   geom_point(size = 3) +
   geom_point(aes(x = sequel_year, y = title, color = link_type_id), size = 3) +
-  labs(color = 'Type of Movie', title = "Sequels/Remakes/Spinoffs Produced by Decade", x = "Release Year of Original Movie", y = "Movie Title", caption = "(Based on data from IMDb) Each panel includes the top ten grossing movie of that decade.") +
+  labs(color = 'Type of Movie', title = "Sequels and Remakes Produced by Decade", x = "Release Year of Original Movie", y = "Movie Title", caption = "(Based on data from IMDb) Each panel includes the top ten grossing movie of that decade.") +
   theme(axis.text.x = element_text(size = 15),
         axis.text.y = element_text(size = 11),
         plot.title = element_text(size = 28),
-        plot.caption = element_text(size = 12.5),
+        plot.caption = element_text(size = 10),
         strip.text.x = element_text(size = 14),
         legend.title = element_text(size = 16),
         legend.text = element_text(size = 14),

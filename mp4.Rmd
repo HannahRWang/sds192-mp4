@@ -1,11 +1,26 @@
 ---
-title: "mp4"
+title: "The Death of Hollywood Originality?"
 author: Amy Park, Emma Vejcik, Hannah Wang
 date: "May 9, 2019"
 output:
   html_document:
     code_folding: hide
 ---
+
+Why does Hollywood make so many remakes? We’ve all seen them, we’ve all complained about them. We don’t understand why our cinematic state is in such a homogenous disarray and the common notion is that originality is dead. And according to IMDB, there will be at least 29 remakes released in 2019, so this trend doesn’t appear to be stopping anytime soon. Our data graphic is a display of the top ten grossing movies of the 2000’s, faceted by decade. Inspired by the Marvel Avengers franchise ([#Endgame](https://twitter.com/search?q=%23Endgame&src=tyah), [#Avengers](https://twitter.com/search?q=%23Avengers&src=tyah), [#Marvel](https://twitter.com/search?q=%23Marvel&src=tyah)), we examined the sequels and subsequent remakes of these movies. Our analysis of these movies is an study of how Hollywood movies, and the popularity of these sequels, further inspires their subject matter and production.
+
+The graphs displayed list the top ten movies of each millennial decade, with movie titles on the x-axis, and their release date on the y-axis. Each black line represents each movie franchise. Following the key on the right of the graph, each dot represents a new movie, with pink correlated to sequels and mint to remakes. The first black dot represents the original movie. By using spatial data points, we can utilize the hierarchy of visual cues to enable the intended audience (common movie goers and followers of each franchise) to optimally understand the data set. Titles, located on each border of the graphic also contribute to any variation of data comprehension.
+
+According to our data, the progression of movie sequel and remake production is steady, with a new film being made about every year or so. While movie goers may wonder and criticise this phenomenon, there is logic behind each studio’s release. [According to Stephen Follows,](https://thetylt.com/entertainment/are-there-too-many-hollywood-reboots-and-sequels) the average budget for films based on existing material was $70.8 million, whereas ‘truly original’ films had an average budget of just $46.4 million. Earnings wise, in 2017, sequels were in the top 35% of top 100 US movies. The sequels and remakes provide a steady, stable income, that directors and producers can rely on to draw in profit, from both the audiences as well as their studios. Many of the movies (i.e., Narnia and Harry Potter) follow a plot line that necessitates a follow up film, mostly based on their plot and how their original material (a book series) also had “sequels.” Directors can also look to the success of other movie franchises (according to Rebecca Rubin, the Avengers Endgame, the 22nd film in the series, grossed over one billion in a single weekend). This creates a culture of reliable and easily reproducible movie making and movie grossing. 
+
+Some may argue that original storylines also become cultural icons and eventually become major movie franchises due to their popularity. Movies like Home Alone may not have been intended to become film series, but have succeeded nonetheless — earning sequels and spinoffs in other entertainment media due to its [Guinness World Record as the highest grossing live action comedy in the U.S. for twenty five years.](http://mentalfloss.com/article/60262/25-things-you-might-not-know-about-home-alone)
+
+However, by looking at our data, we can see that only one movie in each decade was truly original: The Hangover from the 2000s and Ted from the 2010s. All other movies were based off childrens’ toys (Transformers, The LEGO Movie), from superhero comics (Iron Man, Spider-Man, Guardians of the Galaxy, Man of Steel, The Amazing Spider-Man, Thor), adapted from book series (The Chronicles of Narnia, The Lord of the Rings, Harry Potter, The Hunger Games), or animated movies targeting children (Finding Nemo, Monsters INC, How to Train Your Dragon, Despicable Me). The two remaining movies, Pirates of the Caribbean and Alice in Wonderland, are both live-action films produced by Walt Disney Pictures. Most if not all of these movies were able to gain popularity because the company that produced them or the storylines they were based off of were already popular and widely familiar to the American public. 
+
+We quote Amanda Ann Klein and her Atlantic magazine article, [“Spinoff City: Why Hollywood is Built on Unoriginal Ideas.”](https://www.theatlantic.com/entertainment/archive/2016/03/cycles-sequels-spinoffs-remakes-and-reboots/474411/) Klein writes, “to dismiss movies, or TV shows, because they’re inspired by, or part of, a pre-existing franchise or series, is to ignore the entire history of the moving image. Cinema has always been rooted in the idea of multiplicities—that is, in texts that consciously repeat and exploit images, narratives, or characters found in previous texts.” 
+
+Hollywood remakes and sequels are just another shift in film history, brought about to engage the audience; and its working. Again, according to Follows, while some movies do not make back their budget domestically, they typically fare well overseas. Like the summer blockbuster, the beginning of sound films, and 3-D movies, sequels, spinoffs, and remakes are simply another trend that Hollywood is following in order to attract movie goers, especially in an age where most people are content to watch streamed films from platforms such as Netflix or Hulu.
+
 
 ^[Github Repository: https://github.com/HannahRWang/sds192-mp4]
 
@@ -128,7 +143,7 @@ ggplot(pop_seq2, aes(x = original_year, y = title)) +
   geom_segment(aes(xend = sequel_year, yend = title), size = 1) +
   geom_point(size = 3) +
   geom_point(aes(x = sequel_year, y = title, color = link_type_id), size = 3) +
-  labs(color = 'Type of Movie', title = "Sequels and Remakes Produced by Decade", x = "Release Year of Original Movie", y = "Movie Title", caption = "(Based on data from IMDb) Each panel includes the top ten grossing movie of that decade.") +
+  labs(color = 'Type of Movie', title = "Sequels and Remakes Produced by Decade", x = "Movie Release Year", y = "Movie Title", caption = "Each panel includes the top ten grossing movie of that decade.") +
   theme(axis.text.x = element_text(size = 15),
         axis.text.y = element_text(size = 11),
         plot.title = element_text(size = 28),
